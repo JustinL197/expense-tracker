@@ -6,7 +6,7 @@ expense tracker -- version 0
     * title: string
     * category: string
     * amount: number
-    * date: Date object 
+    * timestamp: string
 - will contain 3 basic functions:
     * add transaction
     * delete transaction
@@ -17,11 +17,16 @@ let transactions = [];
 let uniqueID = 0;
 
 function addTransaction(title, category, amount){
+   let converted_amount = Number(amount)
+   if (!title || !category || !Number.isFinite(converted_amount)){
+      return false;
+   }
+   
     let expense = {
         id: uniqueID++,
         title: title,
         category: category,
-        amount: amount,
+        amount: converted_amount,
         timestamp: formattedDate()
     }
 
@@ -46,17 +51,31 @@ function formattedDate(){
 }
 
 function deleteTransaction(id){
-   let new_transactions = [];
-   for (expense of transactions){
-      if (expense.id != id){
-         new_transactions.push(expense)
+   let modified_transaction_list = []
+   let valid_id = Number(id)
+   let isFound = false;
+   
+   if (!Number.isInteger(valid_id)){
+      // invalid transaction
+      return false
+   }
+   
+   for (let expense of transactions){
+      if (expense.id !== valid_id){
+         modified_transaction_list.push(expense);
+      } else{
+         //transaction found and deleted
+         isFound = true;
       }
    }
-   transactions = new_transactions;
+
+   transactions = modified_transaction_list;
+
+   return (isFound);
 }
 
 function listTransactions(){
-    console.log(transactions);
+   return (transactions);
 }
 
 module.exports = {
