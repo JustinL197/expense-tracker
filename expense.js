@@ -45,11 +45,22 @@ function formattedDate(){
     return timestamp;
 }
 
+function deleteTransaction(id){
+   let new_transactions = [];
+   for (expense of transactions){
+      if (expense.id != id){
+         new_transactions.push(expense)
+      }
+   }
+   transactions = new_transactions;
+}
+
 function listTransactions(){
     console.log(transactions);
 }
 
 module.exports = {
-    addTransaction,
-    listTransactions,
+   addTransaction,
+   listTransactions,
+   deleteTransaction
 };
