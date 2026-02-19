@@ -18,19 +18,16 @@ let uniqueID = 0;
 
 function addTransaction(title, category, amount){
    let converted_amount = Number(amount)
-   if (!title || !category || !Number.isFinite(converted_amount)){
-      return false;
-   }
-   
-    let expense = {
+   let expense = {
         id: uniqueID++,
         title: title,
         category: category,
         amount: converted_amount,
         timestamp: formattedDate()
     }
-
-    transactions.push(expense);
+   
+   transactions.push(expense);
+   return true
 }
 
 function formattedDate(){
