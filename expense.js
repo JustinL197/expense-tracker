@@ -15,7 +15,7 @@ expense tracker -- version 0
 const fs = require('fs');
 
 
-let transactions = [];
+let transactions = JSON.parse(fs.readFileSync('./transactions.json', 'utf-8'));
 let uniqueID = 0;
 
 function addTransaction(title, category, amount){
