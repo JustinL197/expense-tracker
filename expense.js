@@ -12,22 +12,26 @@ expense tracker -- version 0
     * delete transaction
     * display all transactions
 */
+const fs = require('fs');
+
 
 let transactions = [];
 let uniqueID = 0;
 
 function addTransaction(title, category, amount){
    let converted_amount = Number(amount)
-   let expense = {
+   
+    let expense = {
         id: uniqueID++,
         title: title,
         category: category,
         amount: converted_amount,
         timestamp: formattedDate()
     }
-   
-   transactions.push(expense);
-   return true
+
+    transactions.push(expense);
+    fs.writeFileSync('./transactions.json', JSON.stringify(transactions));
+    return true
 }
 
 function formattedDate(){
@@ -72,7 +76,10 @@ function deleteTransaction(id){
 }
 
 function listTransactions(){
-   return (transactions);
+   const data = fs.readFileSync('./transactions.json', 'utf-8');
+   const parsedData = JSON.parse(data);
+
+   return parsedData;
 }
 
 module.exports = {
