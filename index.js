@@ -1,6 +1,7 @@
 const {addTransaction, listTransactions} = require('./expense');
 const readline = require('readline/promises');
 const {stdin, stdout} = require('process');
+const fs = require('fs');
 
 const rl = readline.createInterface({
     input: stdin,
@@ -28,7 +29,7 @@ async function getExpenseAmount(){
     while (true){
         try{
             expenseAmount = await rl.question("Amount...");
-            if (!Number.isFinite(Number(expenseAmount))){
+            if (!expenseAmount || !Number.isFinite(Number(expenseAmount))){
                 throw new Error("Must be a number");
             }
             break;
@@ -55,6 +56,7 @@ async function getExpenseCategory(){
     return expenseCategory
 }
 
+
 (async function(){
     if (process.argv[2] === 'add'){
     try{
@@ -72,3 +74,7 @@ async function getExpenseCategory(){
     }
 }
 })();
+
+if (process.argv[2] === 'list'){
+    console.log (listTransactions());
+}
