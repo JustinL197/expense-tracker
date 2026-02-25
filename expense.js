@@ -13,16 +13,16 @@ expense tracker -- version 0
     * display all transactions
 */
 const fs = require('fs');
+const crypto = require('crypto');
 
 
 let transactions = JSON.parse(fs.readFileSync('./transactions.json', 'utf-8'));
-let uniqueID = 0;
 
 function addTransaction(title, category, amount){
    let converted_amount = Number(amount)
    
     let expense = {
-        id: uniqueID++,
+        id: crypto.randomUUID(),
         title: title,
         category: category,
         amount: converted_amount,
@@ -53,16 +53,10 @@ function formattedDate(){
 
 function deleteTransaction(id){
    let modified_transaction_list = []
-   let valid_id = Number(id)
    let isFound = false;
    
-   if (!Number.isInteger(valid_id)){
-      // invalid transaction
-      return false
-   }
-   
    for (let expense of transactions){
-      if (expense.id !== valid_id){
+      if (expense.id !== id){
          modified_transaction_list.push(expense);
       } else{
          //transaction found and deleted
@@ -70,8 +64,7 @@ function deleteTransaction(id){
       }
    }
 
-   transactions = modified_transaction_list;
-
+   fs.writeFileSync('transactions.json', JSON.stringify(modified_transaction_list))
    return (isFound);
 }
 
