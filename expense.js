@@ -51,21 +51,12 @@ function formattedDate(){
     return timestamp;
 }
 
-function deleteTransaction(id){
-   let modified_transaction_list = []
-   let isFound = false;
+function deleteTransaction(inputNumber){
    
-   for (let expense of transactions){
-      if (expense.id !== id){
-         modified_transaction_list.push(expense);
-      } else{
-         //transaction found and deleted
-         isFound = true;
-      }
-   }
+   let deleted_expense = transactions.splice(Number(inputNumber) - 1, 1 );
 
-   fs.writeFileSync('transactions.json', JSON.stringify(modified_transaction_list))
-   return (isFound);
+   fs.writeFileSync('transactions.json', JSON.stringify(transactions))
+   return (deleted_expense.length > 0)
 }
 
 function listTransactions(){
