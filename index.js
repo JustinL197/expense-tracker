@@ -92,6 +92,11 @@ async function getDeleteId(){
 
 if (process.argv[2] === 'list'){
     const expenseList = listTransactions();
+    if (expenseList.length == 0){
+        console.log("No expenses to list...");
+        process.exit()
+    }
+
     let index = 1;
     for (let transaction of expenseList){
         console.log(`${index++}...${transaction.title}....${transaction.amount}....${transaction.timestamp}`)
@@ -110,15 +115,19 @@ if (process.argv[2] === 'list'){
                 console.log(`${index++}...${transaction.title}...${transaction.amount}...${transaction.timestamp}`)
             }
 
-            let id = await getDeleteId();
+            let deleted_id = await getDeleteId();
 
-            if (!Number.isFinite(Number(id))){
+            if (!Number.isFinite(Number(deleted_id))){
                 throw new Error("Must be a number")
             }
 
-            if (!deleteTransaction(id)){
+            if (!deleteTransaction(deleted_id)){
                 throw new Error("Does not exist")
             }
+
+            deleteTransaction(deleted_id)
+            console.log("Transaction successfully deleted");
+
         }catch(err){
             console.log(err)
         }finally{
