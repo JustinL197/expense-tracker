@@ -15,7 +15,6 @@ expense tracker -- version 0
 const fs = require('fs');
 const crypto = require('crypto');
 const {database} = require('./database');
-const { error } = require('console');
 
 
 function addTransaction(title, category, amount){

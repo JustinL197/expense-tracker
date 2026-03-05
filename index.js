@@ -1,4 +1,4 @@
-const {addTransaction, listTransactions, deleteTransaction} = require('./expense');
+const {addTransaction, listExpenses, deleteTransaction} = require('./expense');
 const readline = require('readline/promises');
 const {stdin, stdout} = require('process');
 const fs = require('fs');
@@ -90,19 +90,28 @@ async function getDeleteId(){
     }
 })();
 
-if (process.argv[2] === 'list'){
-    const expenseList = listTransactions();
-    if (expenseList.length == 0){
-        console.log("No expenses to list...");
+(async function(){
+    try{
+        if (process.argv[2] === 'list'){
+            const expense_list = await listExpenses();
+
+            if (expense_list.length == 0){
+                console.log("No expenses to list...");
+                process.exit()
+            }
+        
+            let index = 1;
+            for (let transaction of expense_list){
+                console.log(`${index++}...${transaction.title}....${transaction.amount}....${transaction.timestamp}`)
+            }
+        }
+    }catch(error){
+        console.log(error)
+    }finally{
         process.exit()
     }
+})
 
-    let index = 1;
-    for (let transaction of expenseList){
-        console.log(`${index++}...${transaction.title}....${transaction.amount}....${transaction.timestamp}`)
-    }
-    process.exit()
-}
 
 
 (async function(){
