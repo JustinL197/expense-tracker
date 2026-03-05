@@ -79,7 +79,7 @@ async function getDeleteId(){
             let category = await getExpenseCategory();
             let amount = await getExpenseAmount();
 
-            if (addTransaction(title, category, amount) == true){
+            if (await addTransaction(title, category, amount)){
                 console.log('Expense added successfully')
             }
         }catch(err){
@@ -91,27 +91,26 @@ async function getDeleteId(){
 })();
 
 (async function(){
-    try{
-        if (process.argv[2] === 'list'){
+    if (process.argv[2] === 'list'){
+        try{
             const expense_list = await listExpenses();
 
             if (expense_list.length == 0){
-                console.log("No expenses to list...");
-                process.exit()
+                console.log("No expenses to display")
+                return 
             }
-        
-            let index = 1;
-            for (let transaction of expense_list){
-                console.log(`${index++}...${transaction.title}....${transaction.amount}....${transaction.timestamp}`)
-            }
-        }
-    }catch(error){
-        console.log(error)
-    }finally{
-        process.exit()
-    }
-})
 
+            let index = 1;
+            for (let expense of expense_list){
+                console.log(`${index++}...${expense.title}....${expense.amount}....${expense.timestamp}`)
+            }
+        }catch(error){
+            console.log(error)
+        }finally{
+            process.exit()
+        }
+    }
+})();
 
 
 (async function(){

@@ -18,18 +18,22 @@ const {database} = require('./database');
 
 
 async function addTransaction(title, category, amount){
-   let converted_amount = Number(amount)
+    try{
+        let converted_amount = Number(amount)
    
-    const expense = await prisma.expense.create({
-        data: {
-            id: crypto.randomUUID(),
-            title: title,
-            category: category,
-            amount: converted_amount,
-            timestamp: formattedDate()
-        }
-    })
-    return true
+        await database.expenses.create({
+            data: {
+                title: title,
+                category: category,
+                amount: converted_amount,
+                timestamp: formattedDate()
+            }
+        })
+        return true
+    }catch(error){
+        console.log("cannot add transaction, please try again");
+        throw error;
+    }
 }
 
 function formattedDate(){
