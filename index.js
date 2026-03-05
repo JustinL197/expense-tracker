@@ -116,26 +116,12 @@ async function getDeleteId(){
 (async function(){
     if (process.argv[2] === 'del'){
         try{
-            const expenseList = listTransactions();
-            let index = 1;
-            
-            for (let transaction of expenseList){
-                console.log(`${index++}...${transaction.title}...${transaction.amount}...${transaction.timestamp}`)
-            }
-
             let deleted_id = await getDeleteId();
 
-            if (!Number.isFinite(Number(deleted_id))){
-                throw new Error("Must be a number")
+            if (await deleteTransaction(deleted_id)){
+                 console.log("Transaction successfully deleted");
             }
-
-            if (!deleteTransaction(deleted_id)){
-                throw new Error("Does not exist")
-            }
-
-            deleteTransaction(deleted_id)
-            console.log("Transaction successfully deleted");
-
+           
         }catch(err){
             console.log(err)
         }finally{

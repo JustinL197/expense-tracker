@@ -12,8 +12,6 @@ expense tracker -- version 0
     * delete transaction
     * display all transactions
 */
-const fs = require('fs');
-const crypto = require('crypto');
 const {database} = require('./database');
 
 
@@ -53,12 +51,17 @@ function formattedDate(){
     return timestamp;
 }
 
-function deleteTransaction(inputNumber){
-   
-   let deleted_expense = transactions.splice(Number(inputNumber) - 1, 1 );
-
-   fs.writeFileSync('transactions.json', JSON.stringify(transactions))
-   return (deleted_expense.length > 0)
+async function deleteTransaction(inputNumber){
+   try{
+        const deleted_expense = await database.expenses.delete({
+            where:{
+                id: inputNumber
+            }
+        })
+        return (deleted_expense)
+   }catch(error){
+        console.log("transaction does not exist");
+   }
 }
 
 async function listExpenses(){
