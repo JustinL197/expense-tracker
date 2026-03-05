@@ -17,19 +17,18 @@ const crypto = require('crypto');
 const {database} = require('./database');
 
 
-function addTransaction(title, category, amount){
+async function addTransaction(title, category, amount){
    let converted_amount = Number(amount)
    
-    let expense = {
-        id: crypto.randomUUID(),
-        title: title,
-        category: category,
-        amount: converted_amount,
-        timestamp: formattedDate()
-    }
-
-    transactions.push(expense);
-    fs.writeFileSync('./transactions.json', JSON.stringify(transactions));
+    const expense = await prisma.expense.create({
+        data: {
+            id: crypto.randomUUID(),
+            title: title,
+            category: category,
+            amount: converted_amount,
+            timestamp: formattedDate()
+        }
+    })
     return true
 }
 
