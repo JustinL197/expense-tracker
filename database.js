@@ -1,0 +1,1 @@
+const prismaClient = require('@prsima/Client');

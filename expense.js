@@ -14,9 +14,9 @@ expense tracker -- version 0
 */
 const fs = require('fs');
 const crypto = require('crypto');
+const {database} = require('./database');
+const { error } = require('console');
 
-
-let transactions = JSON.parse(fs.readFileSync('./transactions.json', 'utf-8'));
 
 function addTransaction(title, category, amount){
    let converted_amount = Number(amount)
@@ -59,15 +59,19 @@ function deleteTransaction(inputNumber){
    return (deleted_expense.length > 0)
 }
 
-function listTransactions(){
-   const data = fs.readFileSync('./transactions.json', 'utf-8');
-   const parsedData = JSON.parse(data);
+async function listExpenses(){
+    try{
+        const expense_list = await database.expenses.findMany();
+        return expense_list;
 
-   return parsedData;
+    }catch(error){
+        console.log(error)
+        throw error;
+    }
 }
 
 module.exports = {
    addTransaction,
-   listTransactions,
+   listExpenses,
    deleteTransaction
 };
