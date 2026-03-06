@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.4.2",
-    "better-sqlite3": "^12.6.2"
+    "better-sqlite3": "^12.6.2",
+    "express": "^5.2.1"
   }
 }

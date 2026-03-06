@@ -1,7 +1,6 @@
 const {addTransaction, listExpenses, deleteTransaction} = require('./expense');
 const readline = require('readline/promises');
 const {stdin, stdout} = require('process');
-const fs = require('fs');
 
 const rl = readline.createInterface({
     input: stdin,
